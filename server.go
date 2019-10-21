@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func main()  {
+func main() {
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
@@ -29,11 +29,11 @@ func show(c echo.Context) error {
 	// Get team and member from the query string
 	team := c.QueryParam("team")
 	member := c.QueryParam("member")
-	return c.String(http.StatusOK, "tea,:" + team + ", member:" + member)
+	return c.String(http.StatusOK, "team,:"+team+", member:"+member)
 }
 
 func save(c echo.Context) error {
 	name := c.FormValue("name")
 	email := c.FormValue("email")
-	return c.String(http.StatusOK, "name:" + name + ", email:" + email)
+	return c.String(http.StatusOK, "name:"+name+", email:"+email)
 }
