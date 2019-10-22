@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"github.com/yoshimitsuEgashira/echo-tutorial/hundlers"
 	"html/template"
 	"io"
@@ -24,6 +25,20 @@ func main() {
 		templates: template.Must(template.ParseGlob("public/views/*.html")),
 	}
 	e.Renderer = t
+
+	// Root Level Middleware
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	// Group Level Middleware
+	g := e.Group("/admin")
+	g.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (b bool, e error) {
+		if username == "Joe" && password == "secret" {
+			return true, nil
+		} else {
+			return false, nil
+		}
+	}))
 
 	// Route
 	// GET
