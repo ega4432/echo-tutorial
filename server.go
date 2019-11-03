@@ -2,11 +2,10 @@ package main
 
 import (
 	"github.com/labstack/echo"
+	"html/template"
+	"io"
 	"net/http"
 )
-
-const helloText string = `Hello, World from echo!
-echo is high performance, extensible, minimalist Go web framework`
 
 type User struct {
 	Name  string `json:"name"`
@@ -26,19 +25,28 @@ type Response struct {
 	Status  string `json:"status"`
 }
 
-// Handler
-func hello(c echo.Context) error {
-	return c.String(http.StatusOK, helloText)
+type Template struct {
+	templates *template.Template
+}
+
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
 }
 
 func main() {
 	// Echo Instance
 	e := echo.New()
 
+	// Template
+	t := &Template{
+		templates: template.Must(template.ParseGlob("public/views/*.html")),
+	}
+	e.Renderer = t
+
 	// Route
 
 	// GET
-	e.GET("/", hello)
+	e.GET("/", home)
 	e.GET("/users/:id", getUser)
 	e.GET("/users/:name", getUserName)
 	e.GET("/show", show)
@@ -54,6 +62,11 @@ func main() {
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
+}
+
+// Handler
+func home(c echo.Context) error {
+	return c.Render(http.StatusOK, "home.html", nil)
 }
 
 func getUserName(c echo.Context) error {
