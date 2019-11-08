@@ -43,7 +43,7 @@ func main() {
 	// Route
 	// GET
 	e.GET("/", hundlers.Home)
-	e.GET("/users/:id", hundlers.GetUser)
+	e.GET("/users", hundlers.GetUsers)
 	e.GET("/users/:name", hundlers.GetUserName)
 	e.GET("/show", hundlers.Show)
 

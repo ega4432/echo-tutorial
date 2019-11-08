@@ -1,13 +1,26 @@
 package hundlers
 
 import (
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gocraft/dbr"
 	"github.com/labstack/echo"
+	"log"
 	"net/http"
 )
 
 type User struct {
+	Id    int    `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
+}
+
+type ResponseUsers struct {
+	Users []ResponseUser `json:"users"`
+}
+
+type ResponseUser struct {
+	Id   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 type Message struct {
@@ -23,10 +36,25 @@ type Response struct {
 	Status  string `json:"status"`
 }
 
-func GetUser(c echo.Context) error {
-	// User ID from path `users/:id`
-	id := c.Param("id")
-	return c.String(http.StatusOK, id)
+// for MySQL
+var (
+	tableName = "users"
+	seq       = 1
+	conn, _   = dbr.Open("mysql", "root:@tcp(127.0.0.1:3306)/echo-tutorial", nil)
+	sess      = conn.NewSession(nil)
+)
+
+func GetUsers(c echo.Context) error {
+	var users ResponseUsers
+	_, err := sess.Select("*").From(tableName).Load(&users)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+	log.Printf("SELECT result %d\n", err)
+	r := ResponseUsers{
+		Users: nil,
+	}
+	return c.JSON(http.StatusOK, r)
 }
 
 func GetUserName(c echo.Context) error {
