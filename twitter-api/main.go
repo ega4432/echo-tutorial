@@ -9,8 +9,6 @@ import (
 	"github.com/labstack/echo"
 )
 
-//type Tweets *[]Tweet
-
 type Template struct {
 	templates *template.Template
 }
