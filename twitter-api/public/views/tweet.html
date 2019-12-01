@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html lang="ja">
+<style>
+    .thum>* {
+        float: left;
+        margin-left: 10px;
+    }
+</style>
 <body>
-    <blockquote class="twitter-tweet">
-        <p lang="ja" dir="ltr">{{.Text}}</p>&mdash; {{.User}} (@{{.ScreenName}}) <a href='https://twitter.com/{{.Id}}/status/{{.TweetId}}'>{{.Date}}</a>
-    </blockquote>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <div class="thum">
+        {{range .}}
+            <blockquote class="twitter-tweet">
+                <p lang="ja" dir="ltr">{{.Text}}</p>&mdash; {{.User}} (@{{.ScreenName}}) <a
+                        href='https://twitter.com/{{.Id}}/status/{{.TweetId}}'>{{.Date}}</a>
+            </blockquote>
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        {{end}}
+    </div>
 </body>
 </html>
