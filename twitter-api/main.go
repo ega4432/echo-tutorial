@@ -20,7 +20,7 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 func main() {
 	e := echo.New()
 	t := &Template{
-		templates: template.Must(template.ParseGlob("./twitter-api/public/views/*.html")),
+		templates: template.Must(template.ParseGlob("./public/views/*.html")),
 	}
 	e.Renderer = t
 	e.POST("/search", handlers.SearchTweet)

@@ -16,7 +16,7 @@ type TwitterAccount struct {
 }
 
 func ConnectTwitterAPI() (*anaconda.TwitterApi, error) {
-	row, err := ioutil.ReadFile("./twitter-api/token.json")
+	row, err := ioutil.ReadFile("./token.json")
 	if err != nil {
 		fmt.Printf("Failed to read json file: %s", err.Error())
 		return nil, err
